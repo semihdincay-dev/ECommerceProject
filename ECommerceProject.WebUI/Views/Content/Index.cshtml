@@ -1,0 +1,112 @@
+﻿@model IEnumerable<ECommerceProject.DAL.ViewModel.ContentViewModel>
+@{
+    ViewBag.Title = "Ana Sayfa";
+}
+<div class="container">
+    <br />
+    <div>
+        @Html.ActionLink("Yeni Ürün Ekle", "Create", null, new { @class = "btn btn-primary" })
+    </div>
+    <br />
+    <div>
+        @Html.ActionLink("Ürün Düzenle", "Edit", null, new { @class = "btn btn-warning" })
+    </div>
+    <br />
+    <div style="float:right; margin-bottom:15px">
+        <b>Arama Filtresi : </b>
+        <select id="SearchBy">
+            <option value="Title">Ürün başlığına göre</option>
+            <option value="Description">Ürün İçeriğine göre</option>
+        </select>
+        <br />
+        <br />
+        @Html.TextBox("Search") <input type="submit" id="SearchBtn" value="Ara" />
+    </div>
+
+    <table class="table" style="width: 1200px;">
+        <tr>
+            <th>
+                <b>Ürüm Kodu</b>
+            </th>
+            <th>
+                <b>Başlık</b>
+            </th>
+            <th>
+                <b>Fiyat ₺</b>
+            </th>
+            <th>
+                <b>Stok Miktarı</b>
+            </th>
+            <th>
+                <b>Ürün Fotoğrafı</b>
+            </th>
+            <th>
+                <b>Ürün ile ilgili Detaylar</b>
+            </th>
+        </tr>
+
+        <tbody id="DataSearching">
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Code)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Title)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Price) ₺
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Stock)
+                    </td>
+                    <td>
+                        <img src="/Content/RetrieveImage/@item.ID" alt="" height=100 width=200 />
+                    </td>
+                    <td style="width: 500px;">
+                        @Html.Raw(item.Description)
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+<script src="~/Scripts/jquery-3.4.1.min.js"></script>
+
+<script>
+    $(document).ready(function () {
+        $("#SearchBtn").click(function () {
+            var SearchBy = $("#SearchBy").val();
+            var SearchValue = $("#Search").val();
+            var SetData = $("#DataSearching");
+            SetData.html("");
+            $.ajax({
+                type: "post",
+                url: "/Content/GetSearchingData?SearchBy=" + SearchBy + "&SearchValue=" + SearchValue,
+                contentType: "html",
+                success: function (result) {
+                    if (result.length == 0) {
+                        SetData.append('<tr><td><h3>Aranılan kelimede ürün bulunmamaktadır.</h3></td></tr> ')
+                    }
+                    else {
+                        $.each(result, function (index, value) {
+                            var Data =
+                                "<tr>" +
+                                "<td>" + value.Code + "</td>" +
+                                "<td>" + value.Title + "</td>" +
+                                "<td>" + value.Price + "</td>" +
+                                "<td>" + value.Stock + "</td>" +
+                                "<td>" + value.Stock + "</td>" +
+                                "<td>" + "<img src = /Content/RetrieveImage/" + value.ID + " height=100 width=200/> </td>" +
+                                "<td>" + value.Description + "</td>" +
+                                "</tr>";
+                            SetData.append(Data);
+                        });
+                    }
+                }
+            });
+        });
+    });
+</script>

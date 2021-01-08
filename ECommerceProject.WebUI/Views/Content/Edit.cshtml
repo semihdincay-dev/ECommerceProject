@@ -1,0 +1,73 @@
+﻿@model  IEnumerable<ECommerceProject.DAL.ViewModel.ContentViewModel>
+@{
+    ViewBag.Title = "Ürünler Listesi";
+}
+
+<br />
+<table class="table" style="width: 1200px;">
+    <tr>
+        <th>
+            <b>Ürün Kodu</b>
+        </th>
+        <th>
+            <b>Ürün Başlığı</b>
+        </th>
+        <th>
+            <b>Fiyat ₺</b>
+        </th>
+        <th>
+            <b>Stok Adedi</b>
+        </th>
+        <th>
+            <b>Ürün Resmi</b>
+        </th>
+        <th>
+            <b>Açıklama</b>
+        </th>
+        <th>
+            <b></b>
+        </th>
+        <th>
+            <b></b>
+        </th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            @Html.HiddenFor(modelItem => item.ID)
+            <td>
+                @Html.DisplayFor(modelItem => item.Code)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Title)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Price) ₺
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Stock)
+            </td>
+            <td>
+                <img src="/Content/RetrieveImage/@item.ID" alt="" height=100 width=200 />
+            </td>
+            <td style="width: 500px;">
+                @Html.Raw(item.Description)
+            </td>
+            <td>
+                <div class="form-group">
+                    <div class="col-md-offset-2 col-md-10">
+                        <a href="/Content/EditProduct/@item.ID" class="btn btn-primary"> Düzenle</a>
+                    </div>
+                </div>
+            </td>
+            <td>
+                <div class="form-group">
+                    <div class="col-md-offset-2 col-md-10">
+                        <a href="/Content/Delete/@item.ID" class="btn btn-warning"> Sil</a>
+                    </div>
+                </div>
+            </td>
+        </tr>
+    }
+</table>

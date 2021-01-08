@@ -1,0 +1,8 @@
+ ******************* /////////\\\\\\\\ ******************* 
+
+	Code First olarak Veritabanı Bağlantısı sağlanmıştır.
+	ECommerceProject.DAL katmanındaki App.Config Dosyasının içerisindeki ConnectionString alanında
+	ve ECommerceProject.WebUI katmanındaki Web.Config Dosyasının içerisindeki ConnectionString alanındaki
+	data Source Windows Authentication ile Server adını yazarak, sistemi ayağa kaldırıp test yapabilirsiniz.
+	
+******************** \\\\\\\\\///////// ******************* 
